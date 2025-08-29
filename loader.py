@@ -8,22 +8,20 @@ License: Apache 2.0
 
 import json
 from pathlib import Path
-from typing import Dict, Iterator, List, Any
-
+from typing import Any, Dict, Iterator, List, Optional
+from argparse import ArgumentParser
 
 class AnomalousMathDataset:
     REQUIRED_FIELDS = {"id", "category", "problem", "solution", "tags", "difficulty"}
 
-    def __init__(self, file_path: str):
+    def __init__(self, file_path: str) -> None:
         self.file_path = Path(file_path)
-        if not self.file_path.exists():
-            raise FileNotFoundError(f"Dataset file not found: {self.file_path}")
-
         self.samples: List[Dict[str, Any]] = []
         self._load()
 
     def _load(self) -> None:
-        """Load and validate dataset file."""
+        if not self.file_path.exists():
+            raise FileNotFoundError(f"Dataset file {self.file_path} not found")
         with self.file_path.open("r", encoding="utf-8") as f:
             for line_no, line in enumerate(f, start=1):
                 line = line.strip()
@@ -31,52 +29,51 @@ class AnomalousMathDataset:
                     continue
                 try:
                     obj = json.loads(line)
+                    missing = self.REQUIRED_FIELDS - set(obj.keys())
+                    if missing:
+                        raise ValueError(f"Missing fields {missing} in {self.file_path}, line {line_no}")
+                    self.samples.append(obj)
                 except json.JSONDecodeError as e:
                     raise ValueError(f"Invalid JSON at line {line_no}: {e}") from e
-
-                missing = self.REQUIRED_FIELDS - set(obj.keys())
-                if missing:
-                    raise ValueError(
-                        f"Missing fields {missing} in {self.file_path}, line {line_no}"
-                    )
-
-                self.samples.append(obj)
 
     def __len__(self) -> int:
         return len(self.samples)
 
+    def __getitem__(self, idx: int) -> Dict[str, Any]:
+        return self.samples[idx]
+
     def __iter__(self) -> Iterator[Dict[str, Any]]:
         return iter(self.samples)
 
-    def filter_by_category(self, category: str) -> List[Dict[str, Any]]:
-        """Return samples matching a given category."""
-        return [s for s in self.samples if s.get("category") == category]
+    def stats(self) -> Dict[str, Any]:
+        """Return dataset statistics (category and difficulty counts)."""
+        categories = {}
+        difficulties = {}
+        for sample in self.samples:
+            cat = sample["category"]
+            diff = sample["difficulty"]
+            categories[cat] = categories.get(cat, 0) + 1
+            difficulties[diff] = difficulties.get(diff, 0) + 1
+        return {"categories": categories, "difficulties": difficulties}
 
-    def filter_by_tag(self, tag: str) -> List[Dict[str, Any]]:
-        """Return samples containing a given tag."""
-        return [s for s in self.samples if tag in s.get("tags", [])]
+    def filter_by_category(self, category: str) -> "AnomalousMathDataset":
+        new_dataset = AnomalousMathDataset.__new__(AnomalousMathDataset)
+        new_dataset.file_path = self.file_path
+        new_dataset.samples = [s for s in self.samples if s["category"] == category]
+        return new_dataset
 
-
-if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(
-        description="Load and inspect the Helix Anomalous Math dataset."
-    )
-    parser.add_argument("file", help="Path to dataset file (e.g., train.jsonl)")
-    parser.add_argument("--category", help="Filter by category", default=None)
-    parser.add_argument("--tag", help="Filter by tag", default=None)
-
+def main():
+    parser = ArgumentParser(description="Inspect Helix anomalous math dataset")
+    parser.add_argument("file_path", help="Path to JSONL dataset file")
+    parser.add_argument("--category", help="Filter by category")
     args = parser.parse_args()
 
-    dataset = AnomalousMathDataset(args.file)
-    print(f"Loaded {len(dataset)} samples from {args.file}")
-
+    dataset = AnomalousMathDataset(args.file_path)
     if args.category:
-        filtered = dataset.filter_by_category(args.category)
-        print(f"Found {len(filtered)} samples in category '{args.category}'")
+        dataset = dataset.filter_by_category(args.category)
+    print(f"Dataset: {args.file_path}")
+    print(f"Number of samples: {len(dataset)}")
+    print(f"Stats: {dataset.stats()}")
 
-    if args.tag:
-        filtered = dataset.filter_by_tag(args.tag)
-        print(f"Found {len(filtered)} samples with tag '{args.tag}'")
-
+if __name__ == "__main__":
+    main()
