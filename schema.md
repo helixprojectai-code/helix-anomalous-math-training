@@ -3,7 +3,6 @@
 This document defines the schema for the anomalous math dataset, ensuring consistency across training, validation, and test splits.
 
 ## File Structure
-
 - `train/` --- Training set (bulk examples for model learning)
 - `val/` --- Validation set (for tuning hyperparameters)
 - `test/` --- Test set (for final evaluation)
@@ -11,9 +10,7 @@ This document defines the schema for the anomalous math dataset, ensuring consis
 - `docs/` --- Supporting documentation (schema, taxonomy, protocol, etc.)
 
 ## Data Format
-
 Each example in the dataset is stored as a JSON object with the following fields:
-
 ```json
 {
   "id": "unique_identifier",
