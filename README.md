@@ -1,96 +1,87 @@
 # Helix Anomalous Math Training
 
-**Open dataset of anomalous math problems and creative challenge cases**, developed under Helix AI Innovations.  
-Designed for **training**, **benchmarking**, and **red-teaming** language models.  
-Licensed under **Apache 2.0**.
+An open dataset of **anomalous math problems** and **creative challenge cases**, developed under the Helix Project.  
+Designed for training, benchmarking, and red-teaming large language models.  
+Licensed under the Apache 2.0 License.
 
 ---
 
 ## Overview
 
-This dataset collects **math problem anomalies**, i.e. intentionally creative or subtly misleading problems meant to test inference robustness.  
-Its purpose is to surface edge-case failure modes in LLM-based reasoning systems.
+Most math datasets focus on standard problem types (algebra, geometry, calculus, etc.).  
+This repository explores the *edges* — problems that introduce twists, ambiguity, paradoxes, or symbolic anomalies.
 
-Helix’s goal: foster transparency and **custody-first** evaluation of AI reasoning by providing structured, auditable anomalies.
-
----
-
-## Contents
-
-helix-anomalous-math-training/
-│
-├── LICENSE
-├── README.md
-├── schema.md
-├── taxonomy.md
-├── train.jsonl
-├── val.jsonl
-├── test.jsonl
-├── loader.py
-└── eval_protocol.md
-
-yaml
-Copy code
+The goal is twofold:
+1. Provide **training material** that forces models to generalize beyond standard math drills.  
+2. Offer **red-teaming challenges** to expose brittle reasoning or unexpected failure modes in language models.
 
 ---
 
-## Getting Started
+## Structure
 
+- `data/train/` → Training set (annotated anomalies, ~70%)  
+- `data/val/` → Validation set (~15%)  
+- `data/test/` → Held-out test set (~15%)  
+- `schema/` → JSON/YAML schemas defining anomaly categories  
+- `docs/` → Supporting documentation and taxonomy  
+
+Each problem is stored as JSON with the following schema:
+
+```json
+{
+  "id": "uuid",
+  "type": "algebraic paradox",
+  "problem": "If 1 = 2, what is 3?",
+  "solution": "Undefined under standard arithmetic; anomaly case.",
+  "tags": ["paradox", "logic", "consistency"]
+}
+```
+
+---
+
+## Anomaly Categories
+
+The dataset includes (non-exhaustive):  
+- Paradoxical equations  
+- Infinite regressions  
+- Category boundary violations  
+- Creative twists (e.g., playful or metaphorical framing)  
+- Symbolic confusions (glyph logic, ambiguous operators)  
+- Cross-domain blends (math + language, math + physics)  
+
+---
+
+## Usage
+
+### Training
 ```bash
 git clone https://github.com/helixprojectai-code/helix-anomalous-math-training.git
 cd helix-anomalous-math-training
-Use loader.py to load your splits:
+python scripts/loader.py --split train
+```
 
-python
-Copy code
-from loader import load_split
-train = load_split('train')
-Evaluation Protocol
-Refer to eval_protocol.md for full details.
+### Evaluation
+```bash
+python scripts/eval.py --model gpt-4o --split test
+```
 
-License & Attribution
-Licensed under the Apache License 2.0 — see LICENSE file.
-
-© 2025 17246102 CANADA INC. (Helix AI Innovations Inc.)
-
-Citing
-bibtex
-Copy code
-@software{helix2025anomalousmath,
-  title = {Helix Anomalous Math Training Dataset},
-  author = {{Helix AI Innovations Inc.}},
-  year = {2025},
-  url = {https://github.com/helixprojectai-code/helix-anomalous-math-training},
-}
-Contributing
-Suggest new anomaly types
-
-Expand evaluation examples
-
-Report issues via GitHub Issues
-
-Submit PRs (target dev branch first)
-
-yaml
-Copy code
+### Red-Teaming
+Use `data/challenge/` to stress-test reasoning under ambiguous or adversarial cases.
 
 ---
 
-Next I’ll generate:  
-✅ `schema.md` (field structure)  
-✅ `taxonomy.md` (categories of anomalies)  
-✅ `loader.py` (with Apache 2.0 header)  
-✅ `eval_protocol.md`  
-✅ sample JSONL splits (`train.jsonl`, `val.jsonl`, `test.jsonl`)
+## License
+
+This project is licensed under the **Apache License 2.0**.  
+See [LICENSE](./LICENSE) for details.  
 
 ---
 
-Do you want the JSONL split files to be **tiny toy samples (3–5 problems each)** so the repo is immediately runnable, or leave them **empty stubs** for now so you can fill in later?
+## Contributing
 
-
-
-
-
-
-
-Ask ChatGPT
+Contributions are welcome!  
+You can:  
+- Suggest new anomaly types  
+- Expand evaluation examples  
+- Report issues via GitHub Issues  
+- Submit PRs (target `dev` branch first)
