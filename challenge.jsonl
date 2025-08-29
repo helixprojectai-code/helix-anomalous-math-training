@@ -1,0 +1,5 @@
+```json
+{"id": "challenge_001", "category": "meta-cognitive", "problem": "If this problem has no solution, what is its solution?", "solution": "The problem is self-referential and paradoxical; no consistent solution exists.", "answer": "Paradox", "tags": ["paradox", "self-referential"], "difficulty": "challenge"}
+{"id": "challenge_002", "category": "logic", "problem": "A barber shaves all men who do not shave themselves, and only those men. Does the barber shave himself?", "solution": "The problem creates a logical paradox (Barber Paradox); no such barber can exist.", "answer": "No consistent solution", "tags": ["paradox", "logic"], "difficulty": "challenge"}
+{"id": "challenge_003", "category": "arithmetic", "problem": "What is 1 + 1 in a system where addition is redefined as multiplication?", "solution": "Under redefined addition (as multiplication), 1 + 1 = 1 * 1 = 1.", "answer": "1", "tags": ["redefinition", "trick"], "difficulty": "challenge"}
+```
