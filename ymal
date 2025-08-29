@@ -1,0 +1,15 @@
+
+- **schema.md** — Structure & fields for each anomalous problem  
+- **taxonomy.md** — Categories/types of anomalies included (e.g., conceptual traps, formatting cues)  
+- **train/val/test** — Split JSONL files, one example per line  
+- **loader.py** — Script for parsing and loading the dataset  
+- **eval_protocol.md** — Guidance for use in benchmarking and red-teaming workflows  
+
+---
+
+## Getting Started
+
+```bash
+git clone https://github.com/helixprojectai-code/helix-anomalous-math-training.git
+cd helix-anomalous-math-training
+pip install -r requirements.txt  # (if applicable)
