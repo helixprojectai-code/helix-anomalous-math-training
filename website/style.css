@@ -1,0 +1,22 @@
+```css
+     body {
+       font-family: Arial, sans-serif;
+       background-color: #1a1a2e;
+       color: #e6e6fa;
+       margin: 0;
+       padding: 20px;
+     }
+     h1, h2 {
+       color: #00b7eb;
+     }
+     a {
+       color: #00b7eb;
+       text-decoration: none;
+     }
+     a:hover {
+       text-decoration: underline;
+     }
+     ul {
+       list-style-type: square;
+     }
+     ```
