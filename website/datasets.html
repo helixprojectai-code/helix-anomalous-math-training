@@ -1,0 +1,29 @@
+```html
+     <!DOCTYPE html>
+     <html>
+     <head>
+       <title>Helix Datasets</title>
+       <link rel="stylesheet" href="style.css">
+     </head>
+     <body>
+     <h1>Helix Datasets</h1>
+     <p>Our datasets test AI on anomalous math problems, prioritizing explanatory solutions over pattern-matching.</p>
+     <ul>
+       <li><a href="https://github.com/helixprojectai-code/helix-anomalous-math-training/blob/main/data/test/test.jsonl">test.jsonl</a>: Core test set for model evaluation.</li>
+       <li><a href="https://github.com/helixprojectai-code/helix-anomalous-math-training/blob/main/data/val/val.jsonl">val.jsonl</a>: Validation set for iterative training.</li>
+       <li><a href="https://github.com/helixprojectai-code/helix-anomalous-math-training/blob/main/data/challenge/challenge.jsonl">challenge.jsonl</a>: Hard problems with tags like <code>clone-trap</code>, <code>pattern-trap</code>.</li>
+     </ul>
+     <h2>Schema Overview</h2>
+     <p>Defined in <a href="https://github.com/helixprojectai-code/helix-anomalous-math-training/blob/main/docs/schema.yaml">schema.yaml</a>, our schema enforces:</p>
+     <ul>
+       <li><code>id</code>: Unique problem identifier.</li>
+       <li><code>category</code>: E.g., logic, probability, quantum.</li>
+       <li><code>problem</code>: The question text.</li>
+       <li><code>solution</code>: Step-by-step explanation, not just answers.</li>
+       <li><code>tags</code>: E.g., paradox, clone-trap, explanation-required.</li>
+       <li><code>explanation_goals</code>: Optional goals like dispel-pattern, causal-mechanism.</li>
+     </ul>
+     <p>Contribute: <a href="contributing.html">Join us!</a></p>
+     </body>
+     </html>
+     ```
