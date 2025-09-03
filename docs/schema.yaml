@@ -1,8 +1,49 @@
-explanation_goals:
-  - dispel-pattern
-  - causal-mechanism
-  - counterexample-needed
-tags:
-  - clone-trap
-  - pattern-trap
-  - information-as-power
+```yaml
+  problem:
+    type: object
+    required:
+      - id
+      - category
+      - problem
+      - solution
+      - tags
+      - difficulty
+    properties:
+      id:
+        type: string
+        description: Unique problem identifier (UUID)
+      category:
+        type: string
+        description: Problem category (e.g., paradox, symbolic-confusion)
+      problem:
+        type: string
+        description: The question text
+      solution:
+        type: string
+        description: Step-by-step explanation, not just answers
+      tags:
+        type: array
+        items:
+          type: string
+          enum:
+            - paradox
+            - logic
+            - consistency
+            - clone-trap
+            - pattern-trap
+            - information-as-power
+        description: Tags for anomaly types
+      difficulty:
+        type: string
+        enum: [easy, medium, hard]
+        description: Problem difficulty level
+      explanation_goals:
+        type: array
+        items:
+          type: string
+          enum:
+            - dispel-pattern
+            - causal-mechanism
+            - counterexample-needed
+        description: Optional goals for explanatory solutions
+  ```
