@@ -4,6 +4,9 @@
   Designed for training, benchmarking, and red-teaming large language models. 
   Licensed under the Apache 2.0 License.
 
+  ## Philosophy
+  Helix targets explanatory competence: problems where surface patterns mislead unless causes are articulated.
+   
   ---
 
   ## Installation
