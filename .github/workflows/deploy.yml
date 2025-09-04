@@ -1,36 +1,43 @@
 ```yaml
-     name: Deploy Mani-Site
-     on:
-       push:
-         branches:
-           - main
-           - dev
-       workflow_dispatch:
-     permissions:
-       contents: read
-       pages: write
-       id-token: write
-     jobs:
-       deploy:
-         environment:
-           name: github-pages
-           url: ${{ steps.deployment.outputs.page_url }}
-         runs-on: ubuntu-latest
-         steps:
-           - uses: actions/checkout@v3
-           - name: Check Consent Gate
-             run: |
-               if grep -q "non-reversible?: y" $(git diff --name-only HEAD^ HEAD | grep '\.md$'); then
-                 echo "Non-reversible changes detected. Requires admin approval."
-                 exit 1
-               fi
-           - name: Setup Pages
-             uses: actions/configure-pages@v3
-           - name: Upload Artifact
-             uses: actions/upload-pages-artifact@v2
-             with:
-               path: ./website
-           - name: Deploy to GitHub Pages
-             id: deployment
-             uses: actions/deploy-pages@v2
-     ```
+  name: Deploy Mani-Site
+  on:
+    push:
+      branches:
+        - main
+        - dev
+    workflow_dispatch:
+      inputs:
+        manual_deploy:
+          description: 'Trigger manual deployment'
+          required: false
+  permissions:
+    contents: read
+    pages: write
+    id-token: write
+  concurrency:
+    group: pages
+    cancel-in-progress: true
+  jobs:
+    deploy:
+      environment:
+        name: github-pages
+        url: ${{ steps.deployment.outputs.page_url }}
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - name: Check Consent Gate
+          run: |
+            if grep -q "non-reversible?: y" $(git diff --name-only HEAD^ HEAD | grep '\.md$'); then
+              echo "Non-reversible changes detected. Requires admin approval."
+              exit 1
+            fi
+        - name: Setup Pages
+          uses: actions/configure-pages@v3
+        - name: Upload Artifact
+          uses: actions/upload-pages-artifact@v2
+          with:
+            path: ./website
+        - name: Deploy to GitHub Pages
+          id: deployment
+          uses: actions/deploy-pages@v2
+  ```
